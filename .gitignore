@@ -1,0 +1,22 @@
+# --- Security (NEVER UPLOAD) ---
+.env
+.env.*
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# --- Database ---
+*.db
+*.sqlite3
+
+# --- Temporary/Large Files ---
+temp_rag_data/
+temp_uploads/
+*.log
+
+# --- OS Junk ---
+.DS_Store
+Thumbs.db
