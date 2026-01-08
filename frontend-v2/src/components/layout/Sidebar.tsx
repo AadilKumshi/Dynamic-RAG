@@ -14,12 +14,12 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import {
   AlertDialog,
@@ -56,8 +56,8 @@ export const Sidebar: React.FC = () => {
       <SidebarRoot collapsible="offcanvas">
         {/* Header */}
         <SidebarHeader>
-          <div className="flex items-center gap-3 px-2 py-2">
-            <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center">
+          <div className="flex items-center gap-2 px-2 py-2">
+            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
               <Bot className="h-5 w-5 text-primary-foreground" />
             </div>
             <div className="flex-1 min-w-0">
@@ -65,9 +65,9 @@ export const Sidebar: React.FC = () => {
               <p className="text-xs text-muted-foreground">Document Chat</p>
             </div>
           </div>
-          
-          <Button 
-            onClick={() => setIsCreateModalOpen(true)} 
+
+          <Button
+            onClick={() => setIsCreateModalOpen(true)}
             className="w-full justify-start gap-2"
             disabled={assistants.length >= 3}
           >
@@ -97,14 +97,16 @@ export const Sidebar: React.FC = () => {
                       <SidebarMenuButton
                         onClick={() => selectAssistant(assistant.id)}
                         isActive={selectedAssistantId === assistant.id}
-                        className="group relative"
+                        className="group relative h-auto py-2"
                       >
-                        <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                           <Bot className="h-4 w-4 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{assistant.name}</p>
-                          <p className="text-xs text-muted-foreground truncate">{assistant.file_name}</p>
+                          <p className="text-xs text-muted-foreground truncate text-ellipsis">
+                            {assistant.file_name}
+                          </p>
                         </div>
                         <button
                           onClick={(e) => {
@@ -131,7 +133,7 @@ export const Sidebar: React.FC = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton className="h-auto py-2">
-                    <div className="h-9 w-9 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-medium text-sm">
+                    <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-medium text-sm">
                       {user ? getInitial(user.username) : <User className="h-4 w-4" />}
                     </div>
                     <div className="flex-1 text-left min-w-0">
@@ -160,9 +162,9 @@ export const Sidebar: React.FC = () => {
       </SidebarRoot>
 
       {/* Create Assistant Modal */}
-      <CreateAssistantModal 
-        isOpen={isCreateModalOpen} 
-        onClose={() => setIsCreateModalOpen(false)} 
+      <CreateAssistantModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
       />
 
       {/* Delete Confirmation Dialog */}

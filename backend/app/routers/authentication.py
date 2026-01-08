@@ -36,3 +36,10 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
     
     access_token = JWT.create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+from app.security import Oauth2
+
+@router.get("/users/me", response_model=None)
+def read_users_me(user: models.User = Depends(Oauth2.get_current_user)):
+    return {"username": user.username, "role": user.role}

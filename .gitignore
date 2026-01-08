@@ -20,3 +20,5 @@ temp_uploads/
 # --- OS Junk ---
 .DS_Store
 Thumbs.db
+
+backend/docker-compose.yml

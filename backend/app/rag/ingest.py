@@ -80,7 +80,8 @@ def ingest_pdf(file_path: str, assistant_id: str, chunk_size: int, chunk_overlap
         
         yield json.dumps({
             "status": "processing", 
-            "message": f"Embedding chunks... ({percent}%)"
+            "message": f"Embedding chunks... ({percent}%)",
+            "progress": percent
         })
         
         if vector_store is None:

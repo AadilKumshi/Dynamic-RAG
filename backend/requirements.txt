@@ -19,3 +19,4 @@ joblib
 numpy
 
 langchain-google-genai
+azure-storage-blob

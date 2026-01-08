@@ -104,9 +104,14 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
       });
 
       selectAssistant(parseInt(assistantId));
+      setIsCreating(false);
       handleClose();
-    } catch (err: any) {
-      setError(err.message || 'Failed to create assistant');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Failed to create assistant');
+      }
       setIsCreating(false);
     }
   };

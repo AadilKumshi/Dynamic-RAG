@@ -24,14 +24,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     // Check for existing auth on mount
-    const storedToken = authService.getToken();
-    const storedUser = authService.getUser();
-    
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(storedUser);
-    }
-    setIsLoading(false);
+    const checkAuth = async () => {
+      const storedToken = authService.getToken();
+      if (storedToken) {
+        try {
+          const userData = await authService.getMe();
+          setToken(storedToken);
+          setUser({ username: userData.username });
+        } catch (error) {
+          // Token is invalid or expired
+          authService.logout();
+        }
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const login = useCallback(async (username: string, password: string) => {

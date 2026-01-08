@@ -1,12 +1,22 @@
 from fastapi import FastAPI
 
 from app.rag import chat
-from routers import assistants, admin, authentication
+from app.routers import assistants, admin, authentication
 from app.database import models
 from app.database.database import engine
 from fastapi.responses import RedirectResponse
 
 app = FastAPI(title="RAG Tool Backend API", version="1.0.0")
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for dev
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(authentication.router)
 app.include_router(admin.router)

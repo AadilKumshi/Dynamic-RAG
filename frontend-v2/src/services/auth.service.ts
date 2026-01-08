@@ -54,4 +54,9 @@ export const authService = {
   isAuthenticated(): boolean {
     return !!this.getToken();
   },
+
+  async getMe(): Promise<{ username: string; role: string }> {
+    const response = await api.get('/users/me');
+    return response.data;
+  },
 };
