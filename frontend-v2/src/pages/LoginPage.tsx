@@ -8,8 +8,8 @@ const LoginPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-pulse text-muted-foreground font-light tracking-widest">LOADING...</div>
       </div>
     );
   }
@@ -18,7 +18,11 @@ const LoginPage: React.FC = () => {
     return <Navigate to="/" replace />;
   }
 
-  return <LoginForm />;
+  return (
+    <div className="min-h-screen w-full">
+      <LoginForm />
+    </div>
+  );
 };
 
 export default LoginPage;

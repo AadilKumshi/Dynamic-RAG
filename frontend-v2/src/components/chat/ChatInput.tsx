@@ -8,6 +8,8 @@ interface ChatInputProps {
   isLoading: boolean;
   placeholder?: string;
   disabled?: boolean;
+  value: string;
+  onChange: (value: string) => void;
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({
@@ -15,14 +17,14 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   isLoading,
   placeholder = 'Ask a question...',
   disabled = false,
+  value,
+  onChange,
 }) => {
-  const [message, setMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = () => {
-    if (message.trim() && !isLoading && !disabled) {
-      onSend(message.trim());
-      setMessage('');
+    if (value.trim() && !isLoading && !disabled) {
+      onSend(value.trim());
     }
   };
 
@@ -40,7 +42,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
       textarea.style.height = 'auto';
       textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`;
     }
-  }, [message]);
+  }, [value]);
 
   return (
     <div className="border-t border-border bg-background p-4">
@@ -48,8 +50,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         <div className="relative flex items-end gap-2 bg-muted/50 rounded-xl p-2">
           <Textarea
             ref={textareaRef}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             disabled={disabled || isLoading}
@@ -59,7 +61,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           <Button
             size="icon"
             onClick={handleSubmit}
-            disabled={!message.trim() || isLoading || disabled}
+            disabled={!value.trim() || isLoading || disabled}
             className="h-9 w-9 shrink-0 rounded-lg"
           >
             {isLoading ? (

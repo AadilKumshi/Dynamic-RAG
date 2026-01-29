@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Loader2, Bot } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,13 +8,14 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
+
 export const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -38,11 +39,11 @@ export const LoginForm: React.FC = () => {
       <div className="w-full max-w-md animate-fade-in">
         <div className="flex items-center justify-center mb-8">
           <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-xl bg-primary flex items-center justify-center">
-              <Bot className="h-7 w-7 text-primary-foreground" />
+            <div className="h-12 w-12 rounded-xl flex items-center justify-center">
+              <img src="/logo.png" alt="Orion" className="h-12 w-12" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Dynamic RAG</h1>
+              <h1 className="text-2xl font-bold text-foreground">Orion</h1>
               <p className="text-sm text-muted-foreground">AI-Powered Document Chat</p>
             </div>
           </div>
@@ -51,9 +52,9 @@ export const LoginForm: React.FC = () => {
         <Card className="border-0 shadow-lg">
           <CardHeader className="space-y-1 pb-4">
             <CardTitle className="text-2xl font-semibold">Welcome back</CardTitle>
-            <CardDescription>Enter your credentials to access your account</CardDescription>
+            <CardDescription>Sign in to your account to continue</CardDescription>
           </CardHeader>
-          
+
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               {error && (
@@ -111,11 +112,11 @@ export const LoginForm: React.FC = () => {
                   'Sign in'
                 )}
               </Button>
-              
+
               <p className="text-sm text-muted-foreground text-center">
                 Don't have an account?{' '}
                 <Link to="/signup" className="text-primary hover:underline font-medium">
-                  Create one
+                  Sign up
                 </Link>
               </p>
             </CardFooter>

@@ -17,7 +17,7 @@ export const SignupForm: React.FC = () => {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { signup } = useAuth();
   const navigate = useNavigate();
 
@@ -30,9 +30,9 @@ export const SignupForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!isFormValid) return;
-    
+
     setError('');
     setIsLoading(true);
 
@@ -51,11 +51,11 @@ export const SignupForm: React.FC = () => {
       <div className="w-full max-w-md animate-fade-in">
         <div className="flex items-center justify-center mb-8">
           <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-xl bg-primary flex items-center justify-center">
-              <Bot className="h-7 w-7 text-primary-foreground" />
+            <div className="h-12 w-12 rounded-xl flex items-center justify-center">
+              <img src="/logo.png" alt="Orion" className="h-12 w-12" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Dynamic RAG</h1>
+              <h1 className="text-2xl font-bold text-foreground">Orion</h1>
               <p className="text-sm text-muted-foreground">AI-Powered Document Chat</p>
             </div>
           </div>
@@ -66,7 +66,7 @@ export const SignupForm: React.FC = () => {
             <CardTitle className="text-2xl font-semibold">Create an account</CardTitle>
             <CardDescription>Get started with your AI document assistant</CardDescription>
           </CardHeader>
-          
+
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               {error && (
@@ -177,7 +177,7 @@ export const SignupForm: React.FC = () => {
                   'Create account'
                 )}
               </Button>
-              
+
               <p className="text-sm text-muted-foreground text-center">
                 Already have an account?{' '}
                 <Link to="/login" className="text-primary hover:underline font-medium">

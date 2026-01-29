@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Bot, LogOut, User, MoreVertical } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { Plus, Trash2, Bot, Settings, Book, MoreVertical, Info, LogOut } from 'lucide-react';
 import { useAssistants } from '@/contexts/AssistantContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import {
   Sidebar as SidebarRoot,
@@ -13,13 +13,15 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarRail,
 } from '@/components/ui/sidebar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
 } from '@/components/ui/dropdown-menu';
 import {
   AlertDialog,
@@ -32,13 +34,15 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { CreateAssistantModal } from '@/components/assistant/CreateAssistantModal';
-import { cn } from '@/lib/utils';
+import { ModeToggle } from '@/components/mode-toggle';
+import { useTheme } from '@/components/theme-provider';
 
 export const Sidebar: React.FC = () => {
-  const { user, logout } = useAuth();
   const { assistants, selectedAssistantId, selectAssistant, deleteAssistant } = useAssistants();
+  const { logout } = useAuth();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
+  const { setTheme } = useTheme();
 
   const handleDeleteConfirm = async () => {
     if (deleteConfirmId !== null) {
@@ -47,38 +51,33 @@ export const Sidebar: React.FC = () => {
     }
   };
 
-  const getInitial = (name: string) => {
-    return name.charAt(0).toUpperCase();
+  const handleLogout = () => {
+    logout();
   };
 
   return (
     <>
-      <SidebarRoot collapsible="offcanvas">
+      <SidebarRoot collapsible="icon">
         {/* Header */}
         <SidebarHeader>
-          <div className="flex items-center gap-2 px-2 py-2">
-            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-              <Bot className="h-5 w-5 text-primary-foreground" />
+          <div className="flex items-center gap-2 px-2 h-12 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+            <div className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0">
+              <img src="/logo.png" alt="Orion" className="h-8 w-8" />
             </div>
-            <div className="flex-1 min-w-0">
-              <h1 className="font-semibold text-sidebar-foreground">Dynamic RAG</h1>
-              <p className="text-xs text-muted-foreground">Document Chat</p>
+            <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
+              <h1 className="font-semibold text-sidebar-foreground">Orion</h1>
             </div>
           </div>
 
           <Button
             onClick={() => setIsCreateModalOpen(true)}
-            className="w-full justify-start gap-2"
+            className="w-full h-12 justify-start gap-2 group-data-[collapsible=icon]:justify-center"
+            variant="outline"
             disabled={assistants.length >= 3}
           >
-            <Plus className="h-4 w-4" />
-            New Assistant
+            <Plus className="h-4 w-4 shrink-0" />
+            <span className="group-data-[collapsible=icon]:hidden">New Assistant</span>
           </Button>
-          {assistants.length >= 3 && (
-            <p className="text-xs text-muted-foreground mt-2 text-center">
-              Max 3 assistants reached
-            </p>
-          )}
         </SidebarHeader>
 
         {/* Assistants List */}
@@ -87,37 +86,64 @@ export const Sidebar: React.FC = () => {
             <SidebarGroupContent>
               <SidebarMenu>
                 {assistants.length === 0 ? (
-                  <div className="p-4 text-center">
+                  <div className="p-4 text-center group-data-[collapsible=icon]:hidden">
                     <p className="text-sm text-muted-foreground">No assistants yet</p>
                     <p className="text-xs text-muted-foreground mt-1">Create one to get started</p>
                   </div>
                 ) : (
                   assistants.map((assistant) => (
                     <SidebarMenuItem key={assistant.id}>
-                      <SidebarMenuButton
-                        onClick={() => selectAssistant(assistant.id)}
-                        isActive={selectedAssistantId === assistant.id}
-                        className="group relative h-auto py-2"
-                      >
-                        <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <Bot className="h-4 w-4 text-primary" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate">{assistant.name}</p>
-                          <p className="text-xs text-muted-foreground truncate text-ellipsis">
-                            {assistant.file_name}
-                          </p>
-                        </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setDeleteConfirmId(assistant.id);
-                          }}
-                          className="opacity-0 group-hover:opacity-100 p-1.5 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-all absolute right-2"
+                      <div className="flex items-center w-full relative group/item">
+                        <SidebarMenuButton
+                          onClick={() => selectAssistant(assistant.id)}
+                          isActive={selectedAssistantId === assistant.id}
+                          className="pr-8 group-data-[collapsible=icon]:pr-0"
+                          tooltip={assistant.name}
+                          size="lg"
                         >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </SidebarMenuButton>
+                          <div className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0">
+                            <Book className="h-4 w-4 text-foreground" />
+                          </div>
+                          <span className="flex-1 min-w-0 truncate text-sm font-medium group-data-[collapsible=icon]:hidden">
+                            {assistant.name}
+                          </span>
+                        </SidebarMenuButton>
+
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6 absolute right-1 opacity-0 group-hover/item:opacity-100 transition-opacity ml-auto group-data-[collapsible=icon]:hidden"
+                            >
+                              <MoreVertical className="h-3 w-3 text-muted-foreground" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="start">
+                            <DropdownMenuLabel>Assistant Options</DropdownMenuLabel>
+                            <DropdownMenuItem
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                // In future: Show info modal
+                              }}
+                            >
+                              <Info className="mr-2 h-4 w-4" />
+                              View Info
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setDeleteConfirmId(assistant.id);
+                              }}
+                              className="text-destructive focus:text-destructive"
+                            >
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
                     </SidebarMenuItem>
                   ))
                 )}
@@ -126,31 +152,38 @@ export const Sidebar: React.FC = () => {
           </SidebarGroup>
         </SidebarContent>
 
-        {/* User Section */}
+        {/* Settings Section (Footer) */}
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton className="h-auto py-2">
-                    <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-medium text-sm">
-                      {user ? getInitial(user.username) : <User className="h-4 w-4" />}
+                  <SidebarMenuButton
+                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                    size="lg"
+                  >
+                    <div className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0">
+                      <Settings className="h-4 w-4" />
                     </div>
-                    <div className="flex-1 text-left min-w-0">
-                      <p className="text-sm font-medium truncate">
-                        {user?.username || 'User'}
-                      </p>
+                    <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
+                      <span className="truncate font-semibold">Settings</span>
+                      <span className="truncate text-xs text-muted-foreground">Preferences</span>
                     </div>
-                    <MoreVertical className="h-4 w-4 text-muted-foreground" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <div className="px-2 py-1.5">
-                    <p className="text-sm font-medium">{user?.username}</p>
-                    <p className="text-xs text-muted-foreground">Logged in</p>
-                  </div>
+                <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side="right" align="end" sideOffset={16}>
+                  <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+                  <DropdownMenuItem onClick={() => setTheme("light")}>
+                    Light Mode
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("dark")}>
+                    Dark Mode
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("system")}>
+                    System
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout} className="text-destructive focus:text-destructive">
+                  <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
                     <LogOut className="mr-2 h-4 w-4" />
                     Log out
                   </DropdownMenuItem>
@@ -159,6 +192,7 @@ export const Sidebar: React.FC = () => {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
+        <SidebarRail />
       </SidebarRoot>
 
       {/* Create Assistant Modal */}

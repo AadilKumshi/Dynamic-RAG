@@ -1,3 +1,8 @@
+import os
+
+# workaround for OMP: Error #15: Initializing libomp.dylib, but found libomp.dylib already initialized.
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
+
 from fastapi import FastAPI
 
 from app.rag import chat
