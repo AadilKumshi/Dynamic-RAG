@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Float, Integer, String, ForeignKey, DateTime, Enum
+from sqlalchemy import Column, Float, Integer, String, ForeignKey, DateTime, Enum, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
@@ -24,6 +24,7 @@ class Assistant(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
     file_name = Column(String, nullable=False)
+    image_base64 = Column(Text, nullable=True)
     temperature = Column(Float, default=0.5) 
     top_k = Column(Integer, default=5)       
 
