@@ -37,22 +37,23 @@ export const LoginForm: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/30 p-4">
       <div className="w-full max-w-md animate-fade-in">
-        <div className="flex items-center justify-center mb-8">
-          <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-xl flex items-center justify-center">
-              <img src="/logo.png" alt="Orion" className="h-12 w-12" />
+        <Card className="border border-border/40 shadow-none bg-background/50 backdrop-blur-sm">
+          <CardHeader className="space-y-4 pb-4">
+            <div className="flex items-center justify-center">
+              <div className="flex items-center gap-3">
+                <div className="h-12 w-12 rounded-xl flex items-center justify-center">
+                  <img src="/logo.png" alt="Origo" className="h-12 w-12" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-foreground">Origo</h1>
+                  <p className="text-sm text-muted-foreground">Make your documents talk!</p>
+                </div>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">Orion</h1>
-              <p className="text-sm text-muted-foreground">AI-Powered Document Chat</p>
+            <div className="space-y-1">
+              <CardTitle className="text-1.75xl font-semibold">Welcome back</CardTitle>
+              <CardDescription>Sign in to your account to continue</CardDescription>
             </div>
-          </div>
-        </div>
-
-        <Card className="border-0 shadow-lg">
-          <CardHeader className="space-y-1 pb-4">
-            <CardTitle className="text-2xl font-semibold">Welcome back</CardTitle>
-            <CardDescription>Sign in to your account to continue</CardDescription>
           </CardHeader>
 
           <form onSubmit={handleSubmit}>

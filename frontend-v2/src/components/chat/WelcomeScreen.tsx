@@ -12,7 +12,7 @@ const features = [
   {
     icon: Upload,
     title: 'Large Document Support',
-    description: 'Upload PDFs up to 800 pages for comprehensive document analysis',
+    description: 'Upload PDFs up to 3,000 pages for comprehensive document analysis',
   },
   {
     icon: MessageSquare,
@@ -22,7 +22,7 @@ const features = [
   {
     icon: Sparkles,
     title: 'AI-Powered Analysis',
-    description: 'Leverage advanced RAG technology for intelligent document understanding',
+    description: 'Leverage Artificial Intelligence for document understanding',
   },
   {
     icon: FileText,
@@ -37,10 +37,10 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onCreateAssistant,
       <div className="max-w-2xl w-full text-center animate-fade-in">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-4">
-            Welcome to Orion
+            Welcome to Origo 
           </h1>
           <p className="text-lg text-muted-foreground">
-            Transform your documents into intelligent, conversational AI assistants
+            Transform your documents into intelligent, conversational assistants!
           </p>
         </div>
 
@@ -65,7 +65,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onCreateAssistant,
           className="px-8"
         >
           <Upload className="mr-2 h-5 w-5" />
-          Create Your First Assistant
+          Create an Assistant
         </Button>
 
         {!canCreate && (

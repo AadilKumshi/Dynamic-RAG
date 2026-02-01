@@ -116,6 +116,30 @@
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
+
+  /* Global scrollbar styles */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.5) hsl(var(--muted));
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.5);
+    border-radius: 4px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.7);
+  }
 }
 
 @layer utilities {
@@ -129,15 +153,15 @@
   }
 
   .scrollbar-thin::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    @apply bg-muted;
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    @apply bg-border rounded-full;
+    @apply bg-muted-foreground/50 rounded-full;
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    @apply bg-muted-foreground/30;
+    @apply bg-muted-foreground/70;
   }
 }
 
@@ -146,8 +170,27 @@
     @apply bg-[hsl(var(--chat-user-bg))] text-[hsl(var(--chat-user-foreground))];
   }
 
-  .chat-message-assistant {
-    @apply bg-[hsl(var(--chat-assistant-bg))] text-[hsl(var(--chat-assistant-foreground))];
+  /* Remove background from inline code in markdown */
+  .prose code {
+    @apply bg-transparent text-foreground px-0 py-0;
+  }
+
+  /* Force remove bold formatting inside list items */
+  .prose ul li strong,
+  .prose ol li strong,
+  .prose ul li b,
+  .prose ol li b {
+    font-weight: normal !important;
+  }
+
+  .prose code::before,
+  .prose code::after {
+    content: none;
+  }
+
+  /* Keep styling for code blocks */
+  .prose pre code {
+    @apply bg-muted p-3 block;
   }
 
   .animate-fade-in {

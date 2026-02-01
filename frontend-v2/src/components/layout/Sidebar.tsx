@@ -60,12 +60,12 @@ export const Sidebar: React.FC = () => {
       <SidebarRoot collapsible="icon">
         {/* Header */}
         <SidebarHeader>
-          <div className="flex items-center gap-2 px-2 h-12 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
-            <div className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0">
-              <img src="/logo.png" alt="Orion" className="h-8 w-8" />
+          <div className="flex items-center gap-2 px-2 h-14 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+            <div className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0">
+              <img src="/logo.png" alt="Origo" className="h-10 w-10" />
             </div>
             <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-              <h1 className="font-semibold text-sidebar-foreground">Orion</h1>
+              <h1 className="font-semibold text-sidebar-foreground text-lg">Origo</h1>
             </div>
           </div>
 
@@ -86,7 +86,7 @@ export const Sidebar: React.FC = () => {
             <SidebarGroupContent>
               <SidebarMenu>
                 {assistants.length === 0 ? (
-                  <div className="p-4 text-center group-data-[collapsible=icon]:hidden">
+                  <div className="flex flex-col items-center justify-center p-4 text-center group-data-[collapsible=icon]:hidden">
                     <p className="text-sm text-muted-foreground">No assistants yet</p>
                     <p className="text-xs text-muted-foreground mt-1">Create one to get started</p>
                   </div>
@@ -120,7 +120,7 @@ export const Sidebar: React.FC = () => {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="start">
-                            <DropdownMenuLabel>Assistant Options</DropdownMenuLabel>
+                            {/* <DropdownMenuLabel>Assistant Options</DropdownMenuLabel> */}
                             <DropdownMenuItem
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -136,9 +136,9 @@ export const Sidebar: React.FC = () => {
                                 e.stopPropagation();
                                 setDeleteConfirmId(assistant.id);
                               }}
-                              className="text-destructive focus:text-destructive"
+                              className="text-[#ff0000] focus:text-[#ff0000]"
                             >
-                              <Trash2 className="mr-2 h-4 w-4" />
+                              <Trash2 className="mr-2 h-4 w-4 text-[#ff0000]" />
                               Delete
                             </DropdownMenuItem>
                           </DropdownMenuContent>
@@ -166,8 +166,8 @@ export const Sidebar: React.FC = () => {
                       <Settings className="h-4 w-4" />
                     </div>
                     <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-                      <span className="truncate font-semibold">Settings</span>
-                      <span className="truncate text-xs text-muted-foreground">Preferences</span>
+                      <span className="truncate font-semibold">Settings & Preferences</span>
+                      {/* <span className="truncate text-xs text-muted-foreground">Preferences</span> */}
                     </div>
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
@@ -182,11 +182,10 @@ export const Sidebar: React.FC = () => {
                   <DropdownMenuItem onClick={() => setTheme("system")}>
                     System
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
+                  {/* <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
                     <LogOut className="mr-2 h-4 w-4" />
                     Log out
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                 </DropdownMenuContent>
               </DropdownMenu>
             </SidebarMenuItem>

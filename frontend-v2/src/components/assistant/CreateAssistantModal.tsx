@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Upload, FileText, X, Loader2, CheckCircle2 } from 'lucide-react';
+import { Upload, FileText, X, Loader2 } from 'lucide-react';
 import { useAssistants } from '@/contexts/AssistantContext';
 import { CreateAssistantProgress } from '@/services/assistant.service';
 import { Button } from '@/components/ui/button';
@@ -74,10 +74,9 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
   const handleProgress = (data: CreateAssistantProgress) => {
     // Map status messages
     let message = data.message;
-    if (message.toLowerCase().includes('uploading') || data.status === 'uploading') {
-      // Keep original or custom
-    } else if (data.progress && data.progress > 90) {
-      message = "Applying final touches...";
+    
+    if (data.progress && data.progress >= 90) {
+      message = "Applying final touches";
     }
 
     setStatusMessage(message);
@@ -106,11 +105,6 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
         },
         handleProgress
       );
-
-      toast({
-        title: 'Assistant Created!',
-        description: `${name} is ready to chat`,
-      });
 
       selectAssistant(parseInt(assistantId));
       setIsCreating(false);
@@ -166,9 +160,9 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="flex flex-col max-h-[90vh] p-0 gap-0">
         <DialogHeader className="px-6 py-4 border-b">
-          <DialogTitle>Creating New Assistant</DialogTitle>
+          <DialogTitle>Create a New Assistant</DialogTitle>
           <DialogDescription>
-            Hold tight, this wouldn't take a while!
+            Hold tight, this could take a bit!
           </DialogDescription>
         </DialogHeader>
 
@@ -177,11 +171,7 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
             {isCreating ? (
               <div className="py-12 space-y-6">
                 <div className="text-center">
-                  {isComplete ? (
-                    <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-4" />
-                  ) : (
-                    <Loader2 className="h-12 w-12 text-primary mx-auto mb-4 animate-spin" />
-                  )}
+                  <Loader2 className="h-12 w-12 text-primary mx-auto mb-4 animate-spin" />
                   <p className="text-sm font-medium text-foreground">{statusMessage}</p>
                 </div>
                 <Progress value={progress} className="h-2" />
@@ -302,6 +292,7 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
                             value={chunkSize}
                             onChange={(e) => handleNumberInput(e.target.value, setChunkSize, 1024)}
                             placeholder="500"
+                            className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-muted [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           />
                         </div>
                         <div className="space-y-2">
@@ -312,6 +303,7 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
                             value={chunkOverlap}
                             onChange={(e) => handleNumberInput(e.target.value, setChunkOverlap, 150)}
                             placeholder="50"
+                            className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-muted [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           />
                         </div>
                       </div>

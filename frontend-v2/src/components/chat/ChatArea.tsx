@@ -39,13 +39,16 @@ export const ChatArea: React.FC = () => {
   const [inputMessage, setInputMessage] = useState('');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
   const selectedAssistant = getSelectedAssistant();
   const messages = selectedAssistantId ? getMessagesForAssistant(selectedAssistantId) : [];
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isLoadingResponse]);
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  }, [messages.length, isLoadingResponse]);
 
   const handleSendMessage = (message: string) => {
     if (selectedAssistantId) {
@@ -77,81 +80,52 @@ export const ChatArea: React.FC = () => {
     );
   }
 
-  // If assistants exist but none selected, select the first one or show a prompt
-  // For now, if no selection, we might want to just select the first one automatically or show a generic "Select an assistant"
-  // But based on "Once the user creates his first agent that should be his welcome screen", likely auto-select.
+  // If assistants exist but none selected, show welcome screen
   if (!selectedAssistant) {
     if (assistants.length > 0) {
-      // Auto-select first if available logic is handled in context or here
-      // For visual validation, let's assume one is selected or user selects one.
-      // If not selected, show a "Select to chat" empty state.
       return (
-        <div className="flex-1 flex items-center justify-center p-8 text-center text-muted-foreground">
-          <p>Select an assistant to start chatting</p>
-        </div>
+        <>
+          <WelcomeScreen
+            onCreateAssistant={() => setIsCreateModalOpen(true)}
+            canCreate={assistants.length < 3}
+          />
+          <CreateAssistantModal
+            isOpen={isCreateModalOpen}
+            onClose={() => setIsCreateModalOpen(false)}
+          />
+        </>
       )
     }
   }
 
   return (
     <div className="flex-1 flex flex-col h-full bg-background relative overflow-hidden">
-      {/* Chat Header - Only show when there are messages */}
-      {messages.length > 0 && selectedAssistant && (
-        <div className="h-14 border-b border-border flex items-center justify-between px-4 bg-background/95 backdrop-blur z-10 shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
-              <img src="/logo.png" alt="Orion" className="h-5 w-5" />
-            </div>
-            <div>
-              <h2 className="font-semibold text-foreground">{selectedAssistant.name}</h2>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-1">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                  <Info className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="text-xs space-y-1">
-                  <p>Creativity: {selectedAssistant.temperature}</p>
-                  <p>Chunks: {selectedAssistant.top_k}</p>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                  <MoreVertical className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => setDeleteConfirmOpen(true)}
-                  className="text-destructive focus:text-destructive"
-                >
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  Delete Assistant
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-      )}
-
       {/* Messages Area */}
-      <ScrollArea className="flex-1 scroll-smooth">
-        <div className="max-w-3xl mx-auto p-4 space-y-6 pb-4">
-          {messages.length === 0 && selectedAssistant ? (
+      {messages.length === 0 && selectedAssistant ? (
+        // Welcome screen with centered input
+        <div className="flex-1 flex items-center justify-center p-8 overflow-hidden">
+          <div className="flex flex-col items-center justify-center w-full space-y-4 -mt-36">
             <GeminiWelcome
               assistant={selectedAssistant}
               onSuggestionClick={setInputMessage}
             />
-          ) : (
-            <>
+            {/* Centered Input */}
+            <div className="w-full max-w-3xl mx-auto">
+              <ChatInput
+                onSend={handleSendMessage}
+                isLoading={isLoadingResponse}
+                placeholder="Ask a question..."
+                value={inputMessage}
+                onChange={setInputMessage}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        // Regular chat view with bottom input
+        <>
+          <ScrollArea className="flex-1 scroll-smooth">
+            <div className="max-w-3xl mx-auto p-4 space-y-6 pb-4">
               {messages.map((message) => (
                 <ChatMessage key={message.id} message={message} />
               ))}
@@ -167,22 +141,22 @@ export const ChatArea: React.FC = () => {
                   </div>
                 </div>
               )}
-            </>
-          )}
-          <div ref={messagesEndRef} className="h-px" />
-        </div>
-      </ScrollArea>
+              <div ref={messagesEndRef} className="h-px" />
+            </div>
+          </ScrollArea>
 
-      {/* Input Area - Pinned to bottom */}
-      <div className="p-4 bg-background mt-auto">
-        <ChatInput
-          onSend={handleSendMessage}
-          isLoading={isLoadingResponse}
-          placeholder="Ask a question..."
-          value={inputMessage}
-          onChange={setInputMessage}
-        />
-      </div>
+          {/* Input Area - Pinned to bottom */}
+          <div className="p-4 bg-background mt-auto shrink-0">
+            <ChatInput
+              onSend={handleSendMessage}
+              isLoading={isLoadingResponse}
+              placeholder="Ask a question..."
+              value={inputMessage}
+              onChange={setInputMessage}
+            />
+          </div>
+        </>
+      )}
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>

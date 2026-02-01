@@ -26,3 +26,22 @@ class UserResponse(UserBase):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+class AssistantBase(BaseModel):
+    name: str
+    temperature: float = 0.5
+    top_k: int = 5
+    chunk_size: int = 500
+    chunk_overlap: int = 50
+
+class AssistantCreate(AssistantBase):
+    pass 
+
+class AssistantResponse(AssistantBase):
+    id: int
+    file_name: str
+    image_base64: Optional[str] = None 
+
+    class Config:
+        from_attributes = True
