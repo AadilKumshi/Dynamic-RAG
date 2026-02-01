@@ -43,12 +43,8 @@ def ingest_stream_generator(file_path: str, assistant_id: str, chunk_size: int, 
             else:
                 yield message_json + "\n"
 
-        # Upload to Cloud
+        # Cleanup and finalize
         if output_dir:
-            msg = "Uploading to Cloud..."
-            # print(f" [STREAM] {msg}")
-            yield json.dumps({"status": "uploading", "message": "Uploading to Cloud..."}) + "\n"
-            
             upload_assistant_data(output_dir, assistant_id)
             
             shutil.rmtree(output_dir)

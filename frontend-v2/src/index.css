@@ -170,8 +170,27 @@
     @apply bg-[hsl(var(--chat-user-bg))] text-[hsl(var(--chat-user-foreground))];
   }
 
-  .chat-message-assistant {
-    @apply bg-[hsl(var(--chat-assistant-bg))] text-[hsl(var(--chat-assistant-foreground))];
+  /* Remove background from inline code in markdown */
+  .prose code {
+    @apply bg-transparent text-foreground px-0 py-0;
+  }
+
+  /* Force remove bold formatting inside list items */
+  .prose ul li strong,
+  .prose ol li strong,
+  .prose ul li b,
+  .prose ol li b {
+    font-weight: normal !important;
+  }
+
+  .prose code::before,
+  .prose code::after {
+    content: none;
+  }
+
+  /* Keep styling for code blocks */
+  .prose pre code {
+    @apply bg-muted p-3 block;
   }
 
   .animate-fade-in {

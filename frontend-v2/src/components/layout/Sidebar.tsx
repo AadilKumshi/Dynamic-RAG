@@ -62,10 +62,10 @@ export const Sidebar: React.FC = () => {
         <SidebarHeader>
           <div className="flex items-center gap-2 px-2 h-14 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
             <div className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0">
-              <img src="/logo.png" alt="Orion" className="h-10 w-10" />
+              <img src="/logo.png" alt="Origo" className="h-10 w-10" />
             </div>
             <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-              <h1 className="font-semibold text-sidebar-foreground text-lg">Orion</h1>
+              <h1 className="font-semibold text-sidebar-foreground text-lg">Origo</h1>
             </div>
           </div>
 
@@ -86,7 +86,7 @@ export const Sidebar: React.FC = () => {
             <SidebarGroupContent>
               <SidebarMenu>
                 {assistants.length === 0 ? (
-                  <div className="p-4 text-center group-data-[collapsible=icon]:hidden">
+                  <div className="flex flex-col items-center justify-center p-4 text-center group-data-[collapsible=icon]:hidden">
                     <p className="text-sm text-muted-foreground">No assistants yet</p>
                     <p className="text-xs text-muted-foreground mt-1">Create one to get started</p>
                   </div>

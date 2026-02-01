@@ -45,9 +45,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   }, [value]);
 
   return (
-    <div className="border-t border-border bg-background p-4">
+    <div className="w-full">
       <div className="max-w-3xl mx-auto">
-        <div className="relative flex items-end gap-2 bg-muted/50 rounded-xl p-2">
+        <div className="relative flex items-center gap-2 bg-muted/50 rounded-xl p-2">
           <Textarea
             ref={textareaRef}
             value={value}
@@ -62,12 +62,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             size="icon"
             onClick={handleSubmit}
             disabled={!value.trim() || isLoading || disabled}
-            className="h-9 w-9 shrink-0 rounded-lg"
+            className="h-9 w-9 shrink-0 rounded-lg flex items-center justify-center p-0"
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-              <Send className="h-4 w-4" />
+              <Send className="h-4 w-4 rotate-45 -ml-0.5" />
             )}
           </Button>
         </div>
