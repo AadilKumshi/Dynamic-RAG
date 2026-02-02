@@ -33,7 +33,7 @@ const features = [
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onCreateAssistant, canCreate }) => {
   return (
-    <div className="flex-1 flex items-center justify-center p-6">
+    <div className="flex-1 flex items-center justify-center p-6 -mt-16">
       <div className="max-w-2xl w-full text-center animate-fade-in">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-4">

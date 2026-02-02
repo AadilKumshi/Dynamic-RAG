@@ -1,6 +1,6 @@
 import React from 'react';
 import { Assistant } from '@/services/assistant.service';
-import { Bot, Sparkles } from 'lucide-react';
+import { Bot, Sparkles, Book } from 'lucide-react';
 
 interface GeminiWelcomeProps {
     assistant: Assistant;
@@ -11,11 +11,19 @@ export const GeminiWelcome: React.FC<GeminiWelcomeProps> = ({ assistant, onSugge
     return (
         <div className="w-full max-w-3xl mx-auto text-center animate-fade-in">
             <div className="space-y-2">
-                <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 mb-4">
-                    <img src="/logo.png" alt="Origo" className="h-8 w-8" />
+                <div className="inline-flex items-center justify-center h-24 w-17 border border-border/50 mb-4 overflow-hidden">
+                    {assistant.image_base64 ? (
+                        <img 
+                            src={`data:image/png;base64,${assistant.image_base64}`} 
+                            alt={assistant.name}
+                            className="h-full w-full object-contain"
+                        />
+                    ) : (
+                        <Book className="h-8 w-8 text-foreground" />
+                    )}
                 </div>
                 <h1 className="text-4xl font-semibold tracking-tight bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent pb-1">
-                    Hello, where should we start today?
+                    Where should we start today?
                 </h1>
                 {/* <p className="text-xl text-muted-foreground font-light">
                     How can I assist you today?

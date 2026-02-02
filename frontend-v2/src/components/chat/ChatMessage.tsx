@@ -63,7 +63,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
           className={cn(
             "prose dark:prose-invert prose-sm max-w-none break-words",
             isUser
-              ? "px-4 py-3 rounded-2xl shadow-sm bg-primary text-primary-foreground rounded-tr-sm chat-message-user"
+              ? "px-4 py-3 rounded-3xl shadow-sm bg-muted text-foreground chat-message-user"
               : "chat-message-assistant"
           )}
         >
