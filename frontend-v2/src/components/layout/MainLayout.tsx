@@ -42,12 +42,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className="rounded-full p-[2.5px] bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 to-blue-500">
-                  <Button variant="ghost" className="rounded-full h-8 w-8 bg-gradient-to-br from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold text-base shadow-[inset_0_0_0_1.5px_rgba(0,0,0,1)] p-0">
+                  <Button variant="ghost" className="rounded-full h-8 w-8 bg-gradient-to-br from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold text-base shadow-[inset_0_0_0_1.5px_hsl(var(--background))] p-0">
                     {user?.username ? getInitial(user.username) : <User className="h-4 w-4" />}
                   </Button>
                 </div>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-40">
                 <div className="px-2 py-1.5">
                   <p className="text-sm font-medium">{user?.username}</p>
                   <p className="text-xs text-muted-foreground">Logged In</p>

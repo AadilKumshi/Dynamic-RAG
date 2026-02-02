@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Bot, Settings, Book, MoreVertical, Info, LogOut } from 'lucide-react';
+import { Plus, Trash2, Bot, Settings, Book, MoreVertical, Info, LogOut, Sun, Moon, Monitor, HelpCircle } from 'lucide-react';
 import { useAssistants } from '@/contexts/AssistantContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -61,11 +61,16 @@ export const Sidebar: React.FC = () => {
         {/* Header */}
         <SidebarHeader>
           <div className="flex items-center gap-2 px-2 h-14 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
-            <div className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0">
-              <img src="/logo.png" alt="Origo" className="h-10 w-10" />
-            </div>
-            <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-              <h1 className="font-semibold text-sidebar-foreground text-lg">Origo</h1>
+            <div 
+              onClick={() => selectAssistant(null)}
+              className="flex items-center gap-2 cursor-pointer group-data-[collapsible=icon]:justify-center"
+            >
+              <div className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0">
+                <img src="/logo.png" alt="Origo" className="h-10 w-10" />
+              </div>
+              <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
+                <h1 className="font-semibold text-sidebar-foreground text-lg">Origo</h1>
+              </div>
             </div>
           </div>
 
@@ -101,8 +106,16 @@ export const Sidebar: React.FC = () => {
                           tooltip={assistant.name}
                           size="lg"
                         >
-                          <div className="h-8 w-8 rounded-lg flex items-center justify-center shrink-0">
-                            <Book className="h-4 w-4 text-foreground" />
+                          <div className="h-10 w-7 flex items-center justify-center shrink-0 overflow-hidden border border-border/50">
+                            {assistant.image_base64 ? (
+                              <img 
+                                src={`data:image/png;base64,${assistant.image_base64}`} 
+                                alt={assistant.name}
+                                className="h-full w-full object-contain"
+                              />
+                            ) : (
+                              <Book className="h-4 w-4 text-foreground" />
+                            )}
                           </div>
                           <span className="flex-1 min-w-0 truncate text-sm font-medium group-data-[collapsible=icon]:hidden">
                             {assistant.name}
@@ -119,17 +132,26 @@ export const Sidebar: React.FC = () => {
                               <MoreVertical className="h-3 w-3 text-muted-foreground" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="start">
-                            {/* <DropdownMenuLabel>Assistant Options</DropdownMenuLabel> */}
-                            <DropdownMenuItem
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                // In future: Show info modal
-                              }}
-                            >
-                              <Info className="mr-2 h-4 w-4" />
-                              View Info
-                            </DropdownMenuItem>
+                          <DropdownMenuContent align="start" className="w-44">
+                            {/* <DropdownMenuLabel>Assistant Info</DropdownMenuLabel> */}
+                            <div className="px-2 py-2 text-xs space-y-1.5">
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Creativity Level:</span>
+                                <span className="font-medium">{assistant.temperature}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Retrieval Depth:</span>
+                                <span className="font-medium">{assistant.top_k}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Chunk Size:</span>
+                                <span className="font-medium">{assistant.chunk_size}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Chunk Overlap:</span>
+                                <span className="font-medium">{assistant.chunk_overlap}</span>
+                              </div>
+                            </div>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                               onClick={(e) => {
@@ -174,13 +196,22 @@ export const Sidebar: React.FC = () => {
                 <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side="right" align="end" sideOffset={16}>
                   <DropdownMenuLabel>Appearance</DropdownMenuLabel>
                   <DropdownMenuItem onClick={() => setTheme("light")}>
+                    <Sun className="mr-2 h-4 w-4" />
                     Light Mode
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setTheme("dark")}>
+                    <Moon className="mr-2 h-4 w-4" />
                     Dark Mode
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => setTheme("system")}>
+                    <Monitor className="mr-2 h-4 w-4" />
                     System
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuLabel>Help</DropdownMenuLabel>
+                  <DropdownMenuItem>
+                    <HelpCircle className="mr-2 h-4 w-4" />
+                    How to Use?
                   </DropdownMenuItem>
                   {/* <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
                     <LogOut className="mr-2 h-4 w-4" />
@@ -211,7 +242,7 @@ export const Sidebar: React.FC = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction onClick={handleDeleteConfirm} className="bg-[#ff0000] text-white hover:bg-[#ff0000]/90">
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

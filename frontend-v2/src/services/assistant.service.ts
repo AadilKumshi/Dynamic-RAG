@@ -6,6 +6,9 @@ export interface Assistant {
   file_name: string;
   temperature: number;
   top_k: number;
+  chunk_size: number;
+  chunk_overlap: number;
+  image_base64?: string;
 }
 
 export interface CreateAssistantProgress {

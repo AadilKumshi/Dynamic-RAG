@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Upload, FileText, X, Loader2 } from 'lucide-react';
+import { Upload, FileText, X, Loader2, Hammer, Wrench, Cog, FileStack, FileCheck } from 'lucide-react';
 import { useAssistants } from '@/contexts/AssistantContext';
 import { CreateAssistantProgress } from '@/services/assistant.service';
 import { Button } from '@/components/ui/button';
@@ -158,9 +158,9 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="flex flex-col max-h-[90vh] p-0 gap-0">
+      <DialogContent className="flex flex-col max-h-[75vh] max-w-md p-0 gap-0 backdrop-blur-md bg-background/95">
         <DialogHeader className="px-6 py-4 border-b">
-          <DialogTitle>Create a New Assistant</DialogTitle>
+          <DialogTitle>{isCreating ? 'Creating a New Assistant' : 'Create a New Assistant'}</DialogTitle>
           <DialogDescription>
             Hold tight, this could take a bit!
           </DialogDescription>
@@ -169,9 +169,22 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
         <ScrollArea className="flex-1 overflow-y-auto">
           <div className="p-6">
             {isCreating ? (
-              <div className="py-12 space-y-6">
+              <div className="py-8 space-y-4">
                 <div className="text-center">
-                  <Loader2 className="h-12 w-12 text-primary mx-auto mb-4 animate-spin" />
+                  <div className="relative h-24 w-24 mx-auto mb-3">
+                    {/* Central rotating gear */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                      <Cog className="h-20 w-20 text-primary animate-spin" style={{ animationDuration: '2s' }} />
+                    </div>
+                    
+                    {/* Small rotating gears on sides */}
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2">
+                      <Cog className="h-7 w-7 text-primary/40 animate-spin" style={{ animationDuration: '3s', animationDirection: 'reverse' }} />
+                    </div>
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2">
+                      <Cog className="h-7 w-7 text-primary/40 animate-spin" style={{ animationDuration: '3s' }} />
+                    </div>
+                  </div>
                   <p className="text-sm font-medium text-foreground">{statusMessage}</p>
                 </div>
                 <Progress value={progress} className="h-2" />
