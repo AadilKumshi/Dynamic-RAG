@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 import datetime
 
 class UserBase(BaseModel):
@@ -11,6 +11,7 @@ class UserCreate(UserBase):
 class UserOut(UserBase):
     id: int
     role: str
+    assistants: List['AssistantResponse'] = []
 
     class Config:
         from_attributes = True
@@ -45,3 +46,6 @@ class AssistantResponse(AssistantBase):
 
     class Config:
         from_attributes = True
+
+# Update forward references
+UserOut.model_rebuild()

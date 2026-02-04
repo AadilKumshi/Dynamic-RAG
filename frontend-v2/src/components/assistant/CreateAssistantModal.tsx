@@ -38,8 +38,8 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
   const [file, setFile] = useState<File | null>(null);
   const [temperature, setTemperature] = useState(0.5);
   const [topK, setTopK] = useState(5);
-  const [chunkSize, setChunkSize] = useState<number | string>(500);
-  const [chunkOverlap, setChunkOverlap] = useState<number | string>(50);
+  const [chunkSize, setChunkSize] = useState<number | string>(512);
+  const [chunkOverlap, setChunkOverlap] = useState<number | string>(128);
 
   const [isCreating, setIsCreating] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -100,8 +100,8 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
           file,
           temperature,
           top_k: topK,
-          chunk_size: typeof chunkSize === 'number' ? chunkSize : 500,
-          chunk_overlap: typeof chunkOverlap === 'number' ? chunkOverlap : 0,
+          chunk_size: typeof chunkSize === 'number' ? chunkSize : 512,
+          chunk_overlap: typeof chunkOverlap === 'number' ? chunkOverlap : 128,
         },
         handleProgress
       );
@@ -125,8 +125,8 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
       setFile(null);
       setTemperature(0.5);
       setTopK(5);
-      setChunkSize(500);
-      setChunkOverlap(50);
+      setChunkSize(512);
+      setChunkOverlap(128);
       setProgress(0);
       setStatusMessage('');
       setError('');
@@ -268,7 +268,7 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
                           value={[temperature]}
                           onValueChange={([v]) => setTemperature(v)}
                           min={0}
-                          max={1}
+                          max={2}
                           step={0.1}
                           className="py-1"
                         />
@@ -303,8 +303,8 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
                             id="chunkSize"
                             type="number"
                             value={chunkSize}
-                            onChange={(e) => handleNumberInput(e.target.value, setChunkSize, 1024)}
-                            placeholder="500"
+                            onChange={(e) => handleNumberInput(e.target.value, setChunkSize, 512)}
+                            placeholder="512"
                             className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-muted [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           />
                         </div>
@@ -314,8 +314,8 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
                             id="chunkOverlap"
                             type="number"
                             value={chunkOverlap}
-                            onChange={(e) => handleNumberInput(e.target.value, setChunkOverlap, 150)}
-                            placeholder="50"
+                            onChange={(e) => handleNumberInput(e.target.value, setChunkOverlap, 128)}
+                            placeholder="128"
                             className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-muted [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           />
                         </div>

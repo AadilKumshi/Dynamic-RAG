@@ -81,10 +81,11 @@ def create_assistant_stream(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(Oauth2.get_current_user)
 ):
-    # 1. Check Limit
-    assistant_count = db.query(models.Assistant).filter(models.Assistant.owner_id == current_user.id).count()
-    if assistant_count >= 3:
-        raise HTTPException(status_code=403, detail="Limit reached: You can only create 3 assistants.")
+    # 1. Check Limit (Skip for Admin)
+    if current_user.role != models.UserRole.ADMIN:
+        assistant_count = db.query(models.Assistant).filter(models.Assistant.owner_id == current_user.id).count()
+        if assistant_count >= 5:
+            raise HTTPException(status_code=403, detail="Limit reached: You can only create 5 assistants.")
 
     # 2. Validate
     if not file.filename.endswith(".pdf"):

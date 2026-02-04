@@ -57,7 +57,7 @@ export const assistantService = {
 
     if (!response.ok) {
       if (response.status === 403) {
-        throw new Error('You have reached the maximum limit of 3 assistants. Please delete an existing assistant to create a new one.');
+        throw new Error('You have reached the maximum limit of 5 assistants. Please delete an existing assistant to create a new one.');
       }
       throw new Error('Failed to create assistant');
     }

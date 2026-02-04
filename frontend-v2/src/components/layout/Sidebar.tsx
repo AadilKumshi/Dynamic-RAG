@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Bot, Settings, Book, MoreVertical, Info, LogOut, Sun, Moon, Monitor, HelpCircle } from 'lucide-react';
+import { Plus, Trash2, Bot, Settings, Book, MoreVertical, Info, LogOut, Sun, Moon, Monitor, HelpCircle, Shield } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAssistants } from '@/contexts/AssistantContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -39,7 +40,8 @@ import { useTheme } from '@/components/theme-provider';
 
 export const Sidebar: React.FC = () => {
   const { assistants, selectedAssistantId, selectAssistant, deleteAssistant } = useAssistants();
-  const { logout } = useAuth();
+  const { logout, isAdmin } = useAuth();
+  const navigate = useNavigate();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
   const { setTheme } = useTheme();
@@ -62,7 +64,10 @@ export const Sidebar: React.FC = () => {
         <SidebarHeader>
           <div className="flex items-center gap-2 px-2 h-14 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
             <div 
-              onClick={() => selectAssistant(null)}
+              onClick={() => {
+                selectAssistant(null);
+                navigate('/home');
+              }}
               className="flex items-center gap-2 cursor-pointer group-data-[collapsible=icon]:justify-center"
             >
               <div className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0">
@@ -74,11 +79,22 @@ export const Sidebar: React.FC = () => {
             </div>
           </div>
 
+          {isAdmin && (
+            <Button
+              onClick={() => navigate('/admin')}
+              className="w-full h-10 justify-start gap-2 group-data-[collapsible=icon]:justify-center mb-2"
+              variant="secondary"
+            >
+              <Shield className="h-4 w-4 shrink-0" />
+              <span className="group-data-[collapsible=icon]:hidden">Admin Dashboard</span>
+            </Button>
+          )}
+
           <Button
             onClick={() => setIsCreateModalOpen(true)}
             className="w-full h-12 justify-start gap-2 group-data-[collapsible=icon]:justify-center"
             variant="outline"
-            disabled={assistants.length >= 3}
+            disabled={!isAdmin && assistants.length >= 5}
           >
             <Plus className="h-4 w-4 shrink-0" />
             <span className="group-data-[collapsible=icon]:hidden">New Assistant</span>
@@ -100,7 +116,10 @@ export const Sidebar: React.FC = () => {
                     <SidebarMenuItem key={assistant.id}>
                       <div className="flex items-center w-full relative group/item">
                         <SidebarMenuButton
-                          onClick={() => selectAssistant(assistant.id)}
+                          onClick={() => {
+                            selectAssistant(assistant.id);
+                            navigate('/home');
+                          }}
                           isActive={selectedAssistantId === assistant.id}
                           className="pr-8 group-data-[collapsible=icon]:pr-0"
                           tooltip={assistant.name}
@@ -209,7 +228,7 @@ export const Sidebar: React.FC = () => {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuLabel>Help</DropdownMenuLabel>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/guide')}>
                     <HelpCircle className="mr-2 h-4 w-4" />
                     How to Use?
                   </DropdownMenuItem>

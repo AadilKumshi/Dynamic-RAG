@@ -50,7 +50,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               <DropdownMenuContent align="end" className="w-40">
                 <div className="px-2 py-1.5">
                   <p className="text-sm font-medium">{user?.username}</p>
-                  <p className="text-xs text-muted-foreground">Logged In</p>
+                  {/* <p className="text-xs text-muted-foreground">Logged In</p> */}
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout} className="text-[#ff0000] focus:text-[#ff0000]">

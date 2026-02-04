@@ -3,6 +3,7 @@ import { authService } from '@/services/auth.service';
 
 interface User {
   username: string;
+  role?: string;
 }
 
 interface AuthContextType {
@@ -10,6 +11,7 @@ interface AuthContextType {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isAdmin: boolean;
   login: (username: string, password: string) => Promise<void>;
   signup: (username: string, password: string) => Promise<void>;
   logout: () => void;
@@ -30,7 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
           const userData = await authService.getMe();
           setToken(storedToken);
-          setUser({ username: userData.username });
+          setUser({ username: userData.username, role: userData.role });
         } catch (error) {
           // Token is invalid or expired
           authService.logout();
@@ -46,7 +48,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const response = await authService.login(username, password);
     authService.setAuth(response.access_token, username);
     setToken(response.access_token);
-    setUser({ username });
+    const userData = await authService.getMe();
+    setUser({ username, role: userData.role });
   }, []);
 
   const signup = useCallback(async (username: string, password: string) => {
@@ -68,6 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         token,
         isAuthenticated: !!token,
         isLoading,
+        isAdmin: user?.role === 'admin',
         login,
         signup,
         logout,
