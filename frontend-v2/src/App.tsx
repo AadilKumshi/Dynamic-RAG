@@ -11,6 +11,8 @@ import Index from "./pages/Index";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import HomePage from "./pages/HomePage";
+import GuidePage from "./pages/GuidePage";
+import { AdminDashboard } from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "@/components/theme-provider"
 
@@ -35,6 +37,8 @@ const App = () => (
                   
                   <Route element={<ProtectedRoute />}>
                     <Route path="/home" element={<HomePage />} />
+                    <Route path="/guide" element={<GuidePage />} />
+                    <Route path="/admin" element={<AdminDashboard />} />
                   </Route>
 
                   <Route path="*" element={<NotFound />} />

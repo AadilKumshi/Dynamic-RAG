@@ -70,7 +70,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onCreateAssistant,
 
         {!canCreate && (
           <p className="text-sm text-muted-foreground mt-4">
-            You've reached the maximum of 3 assistants. Delete one to create a new one.
+            You've reached the maximum of 5 assistants. Delete one to create a new one.
           </p>
         )}
       </div>

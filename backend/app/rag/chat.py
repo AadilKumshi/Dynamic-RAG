@@ -72,9 +72,14 @@ def convert_backticks_to_latex(text: str) -> str:
     return text
 
 # --- Pydantic Models for Request/Response ---
+class ChatMessage(BaseModel):
+    role: str  # 'user' or 'assistant'
+    content: str
+
 class ChatRequest(BaseModel):
     assistant_id: int
     query: str
+    chat_history: List[ChatMessage] = []  # Last 6 messages (3 pairs)
 
 class ChatResponse(BaseModel):
     response: str
@@ -109,6 +114,15 @@ def chat_with_assistant(
         convert_system_message_to_human=True 
     )
 
+    # Format chat history if present
+    history_text = ""
+    if request.chat_history:
+        history_lines = []
+        for msg in request.chat_history:
+            role_label = "User" if msg.role == "user" else "Assistant"
+            history_lines.append(f"{role_label}: {msg.content}")
+        history_text = "\n".join(history_lines)
+
     template = """
 You are a friendly, expert Tutor. Your goal is to help the user understand the provided text by explaining it in simple, clear terms. Imagine you are explaining this to a smart student who is learning this for the first time.
 
@@ -131,6 +145,8 @@ INSTRUCTIONS
 CONTEXT
 {context}
 
+{chat_history}
+
 USER QUESTION
 {question}
 """
@@ -143,11 +159,20 @@ USER QUESTION
     formatted_context = format_docs(retrieved_docs)
 
     chain = prompt | llm | StrOutputParser()
-    response_text = chain.invoke({"context": formatted_context, "question": request.query})
+    
+    # Prepare the prompt variables
+    prompt_vars = {
+        "context": formatted_context,
+        "question": request.query,
+        "chat_history": f"PREVIOUS CONVERSATION:\n{history_text}" if history_text else ""
+    }
+    
+    response_text = chain.invoke(prompt_vars)
     
     # Convert backticks to LaTeX format for proper math rendering
     response_text = convert_backticks_to_latex(response_text)
 
-    sources = sorted(list(set([doc.metadata.get("page", 0) for doc in retrieved_docs])))
+    # Get all page numbers including duplicates, then sort
+    sources = sorted([doc.metadata.get("page", 0) for doc in retrieved_docs])
 
     return ChatResponse(response=response_text, sources=sources)

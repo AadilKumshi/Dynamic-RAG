@@ -54,7 +54,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
              "bg-primary/10 text-primary"
           )}
         >
-          <img src="/logo.png" alt="Orion" className="h-4 w-4" />
+          <img src="/logo.png" alt="Origo" className="h-8 w-8" />
         </div>
       )}
 
@@ -116,22 +116,35 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
               }
             }}
           >
-            {message.content}
+            {processedContent}
           </ReactMarkdown>
         </div>
 
-        {message.sources && message.sources.length > 0 && (
+        {message.sources && message.sources.length > 0 && !message.content.includes("The provided document doesn't contain the answer to this question.") && (
           <div className="flex flex-wrap gap-1.5 mt-1">
             <span className="text-xs text-muted-foreground">Sources:</span>
-            {message.sources.map((page, index) => (
-              <Badge
-                key={index}
-                variant="outline"
-                className="text-[10px] px-1.5 py-0 h-5 font-normal cursor-pointer hover:bg-accent border-primary/20 bg-primary/5 text-primary"
-              >
-                Page {page}
-              </Badge>
-            ))}
+            {(() => {
+              // Count occurrences of each page
+              const pageCounts = message.sources.reduce((acc, page) => {
+                acc[page] = (acc[page] || 0) + 1;
+                return acc;
+              }, {} as Record<number, number>);
+              
+              console.log('Source counts:', pageCounts);
+              
+              // Create unique entries with counts
+              return Object.entries(pageCounts)
+                .sort(([a], [b]) => Number(a) - Number(b))
+                .map(([page, count]) => (
+                  <Badge
+                    key={page}
+                    variant="outline"
+                    className="text-[10px] px-1.5 py-0 h-5 font-normal cursor-pointer hover:bg-accent border-primary/20 bg-primary/5 text-primary"
+                  >
+                    Page {page}{count > 1 ? ` x ${count}` : ''}
+                  </Badge>
+                ));
+            })()}
           </div>
         )}
 

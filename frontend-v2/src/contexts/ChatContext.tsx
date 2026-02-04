@@ -41,7 +41,17 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoadingResponse(true);
 
     try {
-      const response = await chatService.sendMessage(assistantId, query);
+      // Get last 6 messages (3 pairs of user + assistant)
+      const currentMessages = messages[assistantId] || [];
+      const recentMessages = currentMessages.slice(-6);
+      
+      // Format for backend
+      const chatHistory = recentMessages.map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }));
+
+      const response = await chatService.sendMessage(assistantId, query, chatHistory);
       
       const assistantMessage: Message = {
         id: generateId(),
@@ -70,7 +80,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       setIsLoadingResponse(false);
     }
-  }, []);
+  }, [messages]);
 
   const getMessagesForAssistant = useCallback((assistantId: number): Message[] => {
     return messages[assistantId] || [];

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Bot, MoreVertical, Trash2, Info } from 'lucide-react';
 import { useAssistants } from '@/contexts/AssistantContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useChat } from '@/contexts/ChatContext';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
@@ -34,6 +35,7 @@ import {
 export const ChatArea: React.FC = () => {
   const { assistants, selectedAssistantId, getSelectedAssistant, deleteAssistant, selectAssistant } = useAssistants();
   const { getMessagesForAssistant, sendMessage, isLoadingResponse } = useChat();
+  const { isAdmin } = useAuth();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
@@ -87,7 +89,7 @@ export const ChatArea: React.FC = () => {
         <>
           <WelcomeScreen
             onCreateAssistant={() => setIsCreateModalOpen(true)}
-            canCreate={assistants.length < 3}
+            canCreate={isAdmin || assistants.length < 5}
           />
           <CreateAssistantModal
             isOpen={isCreateModalOpen}
@@ -132,9 +134,9 @@ export const ChatArea: React.FC = () => {
               {isLoadingResponse && (
                 <div className="flex gap-3 animate-fade-in">
                   <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <img src="/logo.png" alt="Orion" className="h-4 w-4" />
+                    <img src="/logo.png" alt="Orion" className="h-8 w-8" />
                   </div>
-                  <div className="px-4 py-3 bg-muted/50 rounded-2xl rounded-tl-sm flex items-center gap-1">
+                  <div className="flex items-center gap-1 pt-1">
                     <span className="h-1.5 w-1.5 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                     <span className="h-1.5 w-1.5 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                     <span className="h-1.5 w-1.5 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
