@@ -33,46 +33,48 @@ const features = [
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onCreateAssistant, canCreate }) => {
   return (
-    <div className="flex-1 flex items-center justify-center p-6 -mt-16">
-      <div className="max-w-2xl w-full text-center animate-fade-in">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Welcome to Origo 
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            Transform your documents into intelligent, conversational assistants!
-          </p>
+    <div className="flex-1 h-full w-full overflow-y-auto">
+      <div className="min-h-full flex items-center justify-center p-6">
+        <div className="max-w-2xl w-full text-center animate-fade-in -mt-16">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-foreground mb-4">
+              Welcome to Origo
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              Transform your documents into intelligent, conversational assistants!
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            {features.map((feature, index) => (
+              <Card key={index} className="bg-muted/50">
+                <CardContent className="p-5 text-left">
+                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                    <feature.icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="font-medium text-foreground mb-1">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <Button
+            size="lg"
+            onClick={onCreateAssistant}
+            disabled={!canCreate}
+            className="px-8"
+          >
+            <Upload className="mr-2 h-5 w-5" />
+            Create an Assistant
+          </Button>
+
+          {!canCreate && (
+            <p className="text-sm text-muted-foreground mt-4">
+              You've reached the maximum of 5 assistants. Delete one to create a new one.
+            </p>
+          )}
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          {features.map((feature, index) => (
-            <Card key={index} className="bg-muted/50">
-              <CardContent className="p-5 text-left">
-                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
-                  <feature.icon className="h-5 w-5 text-primary" />
-                </div>
-                <h3 className="font-medium text-foreground mb-1">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
-              </CardContent>
-            </Card> 
-          ))}
-        </div>
-
-        <Button 
-          size="lg" 
-          onClick={onCreateAssistant}
-          disabled={!canCreate}
-          className="px-8"
-        >
-          <Upload className="mr-2 h-5 w-5" />
-          Create an Assistant
-        </Button>
-
-        {!canCreate && (
-          <p className="text-sm text-muted-foreground mt-4">
-            You've reached the maximum of 5 assistants. Delete one to create a new one.
-          </p>
-        )}
       </div>
     </div>
   );

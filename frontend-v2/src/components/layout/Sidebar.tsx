@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import {
   Sidebar as SidebarRoot,
+  useSidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
@@ -40,6 +41,7 @@ import { useTheme } from '@/components/theme-provider';
 
 export const Sidebar: React.FC = () => {
   const { assistants, selectedAssistantId, selectAssistant, deleteAssistant } = useAssistants();
+  const { isMobile } = useSidebar();
   const { logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -63,7 +65,7 @@ export const Sidebar: React.FC = () => {
         {/* Header */}
         <SidebarHeader>
           <div className="flex items-center gap-2 px-2 h-14 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
-            <div 
+            <div
               onClick={() => {
                 selectAssistant(null);
                 navigate('/home');
@@ -127,8 +129,8 @@ export const Sidebar: React.FC = () => {
                         >
                           <div className="h-10 w-7 flex items-center justify-center shrink-0 overflow-hidden border border-border/50">
                             {assistant.image_base64 ? (
-                              <img 
-                                src={`data:image/png;base64,${assistant.image_base64}`} 
+                              <img
+                                src={`data:image/png;base64,${assistant.image_base64}`}
                                 alt={assistant.name}
                                 className="h-full w-full object-contain"
                               />
@@ -212,7 +214,12 @@ export const Sidebar: React.FC = () => {
                     </div>
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side="right" align="end" sideOffset={16}>
+                <DropdownMenuContent
+                  className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                  side={isMobile ? "bottom" : "right"}
+                  align="end"
+                  sideOffset={4}
+                >
                   <DropdownMenuLabel>Appearance</DropdownMenuLabel>
                   <DropdownMenuItem onClick={() => setTheme("light")}>
                     <Sun className="mr-2 h-4 w-4" />

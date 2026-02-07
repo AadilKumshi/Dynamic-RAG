@@ -74,7 +74,7 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
   const handleProgress = (data: CreateAssistantProgress) => {
     // Map status messages
     let message = data.message;
-    
+
     if (data.progress && data.progress >= 90) {
       message = "Applying final touches";
     }
@@ -158,7 +158,7 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="flex flex-col max-h-[75vh] max-w-md p-0 gap-0 backdrop-blur-md bg-background/95">
+      <DialogContent className="flex flex-col max-h-[75vh] w-[90vw] md:w-full max-w-md p-0 gap-0 backdrop-blur-md bg-background/95 rounded-lg border border-border/50">
         <DialogHeader className="px-6 py-4 border-b">
           <DialogTitle>{isCreating ? 'Creating a New Assistant' : 'Create a New Assistant'}</DialogTitle>
           <DialogDescription>
@@ -176,7 +176,7 @@ export const CreateAssistantModal: React.FC<CreateAssistantModalProps> = ({ isOp
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                       <Cog className="h-20 w-20 text-primary animate-spin" style={{ animationDuration: '2s' }} />
                     </div>
-                    
+
                     {/* Small rotating gears on sides */}
                     <div className="absolute left-0 top-1/2 -translate-y-1/2">
                       <Cog className="h-7 w-7 text-primary/40 animate-spin" style={{ animationDuration: '3s', animationDirection: 'reverse' }} />
